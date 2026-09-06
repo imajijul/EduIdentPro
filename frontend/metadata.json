@@ -1,0 +1,6 @@
+{
+  "name": "Student Digital ID Card System",
+  "description": "Multi-tenant digital student ID card management, generation, and QR verification platform for educational institutions.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
