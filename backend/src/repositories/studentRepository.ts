@@ -1,5 +1,5 @@
-import { query, IDatabaseClient } from '../config/database.ts';
-import { Student } from '../types/index.ts';
+import { query, IDatabaseClient } from '../config/database';
+import { Student } from '../types/index';
 
 export const studentRepository = {
   async list(params: {

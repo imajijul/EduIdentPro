@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { idCardController } from '../controllers/idCardController.ts';
-import { authenticate, requireRoles } from '../middleware/auth.ts';
-import { enforceTenantIsolation } from '../middleware/tenant.ts';
+import { idCardController } from '../controllers/idCardController';
+import { authenticate, requireRoles } from '../middleware/auth';
+import { enforceTenantIsolation } from '../middleware/tenant';
 
 const router = Router();
 

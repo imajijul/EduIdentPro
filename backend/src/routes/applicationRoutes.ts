@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { applicationController } from '../controllers/applicationController.ts';
-import { authenticate, requireRoles } from '../middleware/auth.ts';
-import { enforceTenantIsolation } from '../middleware/tenant.ts';
+import { applicationController } from '../controllers/applicationController';
+import { authenticate, requireRoles } from '../middleware/auth';
+import { enforceTenantIsolation } from '../middleware/tenant';
 
 const router = Router();
 

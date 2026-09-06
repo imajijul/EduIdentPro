@@ -1,6 +1,6 @@
-import { idCardRepository } from '../repositories/idCardRepository.ts';
-import { verificationRepository } from '../repositories/verificationRepository.ts';
-import { VerificationResult } from '../types/index.ts';
+import { idCardRepository } from '../repositories/idCardRepository';
+import { verificationRepository } from '../repositories/verificationRepository';
+import { VerificationResult } from '../types/index';
 
 export interface SafePublicVerificationResponse {
   isValid: boolean;

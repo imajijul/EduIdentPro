@@ -4,8 +4,8 @@ import path from 'path';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { createServer as createViteServer } from 'vite';
-import apiRouter from './src/routes/apiRouter.ts';
-import { errorHandler } from './src/middleware/errorHandler.ts';
+import apiRouter from './src/routes/apiRouter';
+import { errorHandler } from './src/middleware/errorHandler';
 
 async function startServer() {
   const app = express();

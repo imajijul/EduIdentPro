@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { auditController } from '../controllers/auditController.ts';
-import { verificationController } from '../controllers/verificationController.ts';
-import { authenticate, requireRoles } from '../middleware/auth.ts';
-import { enforceTenantIsolation } from '../middleware/tenant.ts';
+import { auditController } from '../controllers/auditController';
+import { verificationController } from '../controllers/verificationController';
+import { authenticate, requireRoles } from '../middleware/auth';
+import { enforceTenantIsolation } from '../middleware/tenant';
 
 const router = Router();
 

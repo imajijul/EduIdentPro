@@ -2,9 +2,9 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import apiRouter from './routes/apiRouter.ts';
-import { errorHandler } from './middleware/errorHandler.ts';
-import { getDatabasePool } from './config/database.ts';
+import apiRouter from './routes/apiRouter';
+import { errorHandler } from './middleware/errorHandler';
+import { getDatabasePool } from './config/database';
 
 export function createBackendApp() {
   const app = express();
