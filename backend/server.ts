@@ -1,49 +1,79 @@
 import 'dotenv/config';
+
 import express from 'express';
-import path from 'path';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+
 import apiRouter from './src/routes/apiRouter';
 import { errorHandler } from './src/middleware/errorHandler';
+import { getDatabasePool } from './src/config/database';
 
-async function startServer() {
+export function createBackendApp() {
   const app = express();
-  const PORT = 3000;
 
-  app.use(cors({
-    origin: true,
-    credentials: true,
-  }));
+  const allowedOrigin =
+    process.env.FRONTEND_URL || 'http://localhost:5173';
+
+  app.use(
+    cors({
+      origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+
+        if (
+          origin === allowedOrigin ||
+          origin === 'http://localhost:5173' ||
+          origin === 'http://localhost:3000' ||
+          origin.endsWith('.run.app')
+        ) {
+          return callback(null, true);
+        }
+
+        return callback(null, true);
+      },
+      credentials: true,
+    })
+  );
+
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));
   app.use(cookieParser());
 
-  // API routes FIRST
-  const api = (apiRouter && typeof apiRouter === 'object' && (apiRouter as any).default) ? (apiRouter as any).default : apiRouter;
-  app.use('/api', api);
+  // Health check
+  app.get('/health', (_req, res) => {
+    res.json({
+      status: 'ok',
+      service: 'student-digital-id-card-backend',
+    });
+  });
 
-  // // Vite middleware for development / static serving in production
-  // if (process.env.NODE_ENV !== 'production') {
-  //   const vite = await createViteServer({
-  //     server: { middlewareMode: true },
-  //     appType: 'spa',
-  //   });
-  //   app.use(vite.middlewares);
-  // } else {
-  //   const distPath = path.join(process.cwd(), 'dist');
-  //   app.use(express.static(distPath));
-  //   app.get('*', (req, res) => {
-  //     res.sendFile(path.join(distPath, 'index.html'));
-  //   });
-  // }
+  // API routes
+  app.use('/api', apiRouter);
 
   // Global error handler
-  const errHandler = (errorHandler && typeof errorHandler === 'object' && (errorHandler as any).default) ? (errorHandler as any).default : errorHandler;
-  app.use(errHandler);
+  app.use(errorHandler);
 
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Student Digital ID Card System server running on http://0.0.0.0:${PORT}`);
-  });
+  return app;
 }
 
-startServer();
+export const app = createBackendApp();
+
+const PORT = Number(process.env.PORT) || 5000;
+
+getDatabasePool()
+  .then(() => {
+    console.log('PostgreSQL connection pool initialized.');
+
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(
+        `Backend server listening on http://0.0.0.0:${PORT}`
+      );
+    });
+  })
+  .catch((err) => {
+    console.error(
+      'Failed to connect to database at startup:',
+      err.message
+    );
+
+    process.exit(1);
+  });
