@@ -3,7 +3,6 @@ import express from 'express';
 import path from 'path';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { createServer as createViteServer } from 'vite';
 import apiRouter from './src/routes/apiRouter';
 import { errorHandler } from './src/middleware/errorHandler';
 
@@ -23,20 +22,20 @@ async function startServer() {
   const api = (apiRouter && typeof apiRouter === 'object' && (apiRouter as any).default) ? (apiRouter as any).default : apiRouter;
   app.use('/api', api);
 
-  // Vite middleware for development / static serving in production
-  if (process.env.NODE_ENV !== 'production') {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: 'spa',
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
-  }
+  // // Vite middleware for development / static serving in production
+  // if (process.env.NODE_ENV !== 'production') {
+  //   const vite = await createViteServer({
+  //     server: { middlewareMode: true },
+  //     appType: 'spa',
+  //   });
+  //   app.use(vite.middlewares);
+  // } else {
+  //   const distPath = path.join(process.cwd(), 'dist');
+  //   app.use(express.static(distPath));
+  //   app.get('*', (req, res) => {
+  //     res.sendFile(path.join(distPath, 'index.html'));
+  //   });
+  // }
 
   // Global error handler
   const errHandler = (errorHandler && typeof errorHandler === 'object' && (errorHandler as any).default) ? (errorHandler as any).default : errorHandler;
